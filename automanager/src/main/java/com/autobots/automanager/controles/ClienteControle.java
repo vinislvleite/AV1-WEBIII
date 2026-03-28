@@ -3,14 +3,9 @@ package com.autobots.automanager.controles;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.autobots.automanager.entidades.Cliente;
 import com.autobots.automanager.servicos.ClienteServico;
@@ -18,31 +13,35 @@ import com.autobots.automanager.servicos.ClienteServico;
 @RestController
 @RequestMapping("/cliente")
 public class ClienteControle {
-	@Autowired
-	private ClienteServico servico;
 
-	@GetMapping("/cliente/{id}")
-	public Cliente obterCliente(@PathVariable long id) {
-		return servico.obterCliente(id);
-	}
+    @Autowired
+    private ClienteServico servico;
 
-	@GetMapping("/clientes")
-	public List<Cliente> obterClientes() {
-		return servico.obterClientes();
-	}
+    @GetMapping("/{id}")
+    public Cliente obterCliente(@PathVariable Long id) {
+        return servico.obterPorId(id);
+    }
 
-	@PostMapping("/cadastro")
-	public void cadastrarCliente(@RequestBody Cliente cliente) {
-		servico.cadastrarCliente(cliente);
-	}
+    @GetMapping("/clientes")
+    public List<Cliente> obterClientes() {
+        return servico.listarTodos();
+    }
 
-	@PutMapping("/atualizar")
-	public void atualizarCliente(@RequestBody Cliente atualizacao) {
-		servico.atualizarCliente(atualizacao);
-	}
+    @PostMapping("/cadastro")
+    public ResponseEntity<String> cadastrarCliente(@RequestBody Cliente cliente) {
+        servico.cadastrar(cliente);
+        return new ResponseEntity<>("Cliente Cadastrado", HttpStatus.CREATED);
+    }
 
-	@DeleteMapping("/excluir")
-	public void excluirCliente(@RequestBody Cliente exclusao) {
-		servico.excluirCliente(exclusao);
-	}
+    @PutMapping("/atualizar")
+    public ResponseEntity<String> atualizarCliente(@RequestBody Cliente atualizacao) {
+        servico.atualizar(atualizacao);
+        return new ResponseEntity<>("Cliente Atualizado", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/excluir")
+    public ResponseEntity<String> excluirCliente(@RequestBody Cliente exclusao) {
+        servico.deletar(exclusao.getId());
+        return new ResponseEntity<>("Cliente excluído", HttpStatus.OK);
+    }
 }
