@@ -17,12 +17,12 @@ public class DocumentoControle {
     @Autowired
     private DocumentoServico servico;
 
-    @GetMapping("/documento/{id}")
+    @GetMapping("/{id}")
     public Documento obterDocumento(@PathVariable Long id) {
         return servico.obterPorId(id);
     }
 
-    @GetMapping("/documentos")
+    @GetMapping
     public List<Documento> listarDocumentos() {
         return servico.listarTodos();
     }

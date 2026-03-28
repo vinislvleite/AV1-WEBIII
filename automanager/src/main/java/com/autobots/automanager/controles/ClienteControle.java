@@ -22,7 +22,7 @@ public class ClienteControle {
         return servico.obterPorId(id);
     }
 
-    @GetMapping("/clientes")
+    @GetMapping
     public List<Cliente> obterClientes() {
         return servico.listarTodos();
     }

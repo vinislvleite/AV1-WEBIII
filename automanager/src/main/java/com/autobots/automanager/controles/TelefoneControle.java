@@ -22,7 +22,7 @@ public class TelefoneControle {
         return servico.obterPorId(id);
     }
 
-    @GetMapping("/telefones")
+    @GetMapping
     public List<Telefone> listarTelefones() {
         return servico.listarTodos();
     }

@@ -22,7 +22,7 @@ public class EnderecoControle {
         return servico.obterPorId(id);
     }
 
-    @GetMapping("/enderecos")
+    @GetMapping
     public List<Endereco> listarEnderecos() {
         return servico.listarTodos();
     }
